@@ -7,6 +7,9 @@ export async function middleware(req) {
 
   const { pathname } = req.nextUrl;
 
+  // Const to prevent middleware from affecting public files.
+  const PUBLIC_FILE = /\.(.*)$/;
+
   // Allow the requests if the folowing is true...
   // 1) It's a request for next-auth session and provider fetching
   // 2) the token exists
