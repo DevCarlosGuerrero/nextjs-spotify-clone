@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
-import spotifyAPI from "../lib/spotify";
-import spotifyApi from "../lib/spotify";
+import SpotifyWebApi from "spotify-web-api-node";
 
-const spotifyAPI = new SpotifyWebApi({
+const spotifyApi = new SpotifyWebApi({
   clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
   clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
 });
@@ -18,7 +17,7 @@ const useSpotify = () => {
         signIn();
       }
 
-      spotifyAPI.setAccessToken(sesion.user.acessToken);
+      spotifyApi.setAccessToken(session.user.accessToken);
     }
   }, [session]);
 
