@@ -5,8 +5,14 @@ import { useSession } from "next-auth/react";
 // Assets and Icons
 import { ChevronDownIcon } from "@heroicons/react/outline";
 
-// External Librraries
+// External Libraries
+import useSpotify from "../hooks/useSpotify";
 import { shuffle } from "lodash";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { playlistIdState, playlistState } from "../atoms/playlistAtom";
+
+// Components
+import Songs from "./Songs";
 
 const colors = [
   "from-indigo-500",
@@ -20,18 +26,30 @@ const colors = [
 
 const Center = () => {
   const { data: session } = useSession();
+  const spotifyApi = useSpotify();
   const [color, setColor] = useState(null);
-  const [playlists, setPlaylists] = useState([]);
-  const [playlistId, setPlaylistId] = useState(null);
+  const playlistId = useRecoilValue(playlistIdState);
+  const [playlist, setPlaylist] = useRecoilState(playlistState);
 
   useEffect(() => {
     setColor(shuffle(colors).pop());
-  }, []);
+  }, [playlistId]);
+
+  useEffect(() => {
+    spotifyApi
+      .getPlaylist(playlistId)
+      .then((data) => {
+        setPlaylist(data.body);
+      })
+      .catch((err) => console.log("Something went wrong!", err));
+  }, [spotifyApi, playlistId]);
+
+  console.log(playlist);
 
   return (
     <div className="flex-grow">
       <header className="absolute top-5 right-8">
-        <div className="flex items-center bg-red-300 space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
+        <div className="flex items-center bg-black text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
           <img
             src={session?.user.image}
             alt="User image"
@@ -42,10 +60,22 @@ const Center = () => {
         </div>
       </header>
       <section
-        className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 text-white padding-8`}
+        className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 text-white p-8`}
       >
-        {/* <Image src={} alt="" />*/}
-        <h1>Hello</h1>
+        <img
+          src={playlist?.images?.[0]?.url}
+          alt=""
+          className="h-44 w-44 shadow-2xl"
+        />
+        <div>
+          <p className="uppercase">Playlist</p>
+          <h1 className="text-2xl md:text-3xl xl:text-5xl font-bold">
+            {playlist?.name}
+          </h1>
+        </div>
+      </section>
+      <section>
+        <Songs />
       </section>
     </div>
   );
