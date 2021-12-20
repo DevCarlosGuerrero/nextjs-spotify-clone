@@ -21,6 +21,8 @@ const colors = [
 const Center = () => {
   const { data: session } = useSession();
   const [color, setColor] = useState(null);
+  const [playlists, setPlaylists] = useState([]);
+  const [playlistId, setPlaylistId] = useState(null);
 
   useEffect(() => {
     setColor(shuffle(colors).pop());
