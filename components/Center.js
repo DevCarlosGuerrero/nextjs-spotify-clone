@@ -50,10 +50,12 @@ const Center = () => {
     <div className="flex-grow">
       <header className="absolute top-5 right-8">
         <div className="flex items-center bg-black text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
-          <img
+          <Image
             src={session?.user.image}
             alt="User image"
-            className="w-10 h-10 rounded-full object-cover"
+            className="rounded-full object-cover"
+            width={40}
+            height={40}
           />
           <h2>{session?.user.name}</h2>
           <ChevronDownIcon className="h-5 w-5" />
@@ -66,6 +68,8 @@ const Center = () => {
           src={playlist?.images?.[0]?.url}
           alt=""
           className="h-44 w-44 shadow-2xl"
+          // width={176}
+          // height={176}
         />
         <div>
           <p className="uppercase">Playlist</p>

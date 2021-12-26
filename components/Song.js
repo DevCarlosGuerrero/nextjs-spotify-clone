@@ -1,3 +1,4 @@
+import Image from "next/image";
 import useSpotify from "../hooks/useSpotify";
 
 const Song = ({ order, track, i }) => {
@@ -5,9 +6,14 @@ const Song = ({ order, track, i }) => {
   //   console.log(track);
 
   return (
-    <div>
+    <div className="flex items-center pl-3 space-x-4 py-1">
       <p>{order + 1}</p>
-      <img src={track.track.album.images[0].url} alt={track.track.album.name} />
+      <Image
+        src={track.track.album.images[0].url}
+        alt={track.track.album.name}
+        width={40}
+        height={40}
+      />
     </div>
   );
 };
